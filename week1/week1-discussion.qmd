@@ -1,0 +1,70 @@
+---
+title: "Week 1 Discussion"
+format: html
+editor: visual
+---
+ 
+```{r}
+library(janitor)
+library(tidyverse)
+library(usdata)
+library(here)
+```
+#### Import Fracking Data
+```{r}
+fracking <- read_csv(here('week1', 'data', 'registryupload_1.csv'))
+```
+### Data exploration 
+```{r}
+dim(fracking)
+
+str(fracking)
+```
+
+### Clean Fracking Data
+```{r}
+fracking_clean <- fracking |> 
+  clean_names() |> 
+  mutate(job_start_date = str_remove(job_start_date, 'AM')) |> 
+  mutate(date_time_start = mdy_hms(job_start_date)) |> 
+  mutate(year = year(date_time_start)) |> 
+  select(date_time_start, year, state_name,well_name, total_base_water_volume) |> 
+  mutate(state_name = str_to_title(state_name)) |> 
+  filter(!str_detect(state_name, "\\?")) |> 
+  mutate(state_name = ifelse(
+    test = str_length(state_name) == 2,
+    yes = abbr2state(state_name),
+    no = state_name
+  )) |> 
+  mutate(state_name = case_when(
+    state_name == "Colordao" ~ "Colorado",
+    state_name == "Loiusiana" ~ "Louisiana",
+    state_name == "Louisianna" ~ "Louisiana",
+    state_name == "Lousiana" ~ "Louisiana",
+    state_name == "New Mexcio" ~ "New Mexico",
+    state_name == "Norh Dakota" ~ "North Dakota",
+    state_name == "Norht Dakota" ~ "North Dakota",
+    state_name == "North  Dakota" ~ "North Dakota",
+    state_name == "North Dakata" ~ "North Dakota",
+    state_name == "North Dakotta" ~ "North Dakota",
+    state_name == "Noth Dakota" ~ "North Dakota",
+    state_name == "Pennslvania" ~ "Pennsylvania",
+    state_name == "Pennsylavania" ~ "Pennsylvania",
+    state_name == "Pennsylvanya" ~ "Pennsylvania",
+    state_name == "Penssylvania" ~ "Pennsylvania",
+    state_name == "Texasa" ~ "Texas",
+    state_name == "Texs" ~ "Texas", 
+    state_name == "West Viginia" ~ "West Virginia",
+    state_name == "Wyominng" ~ "Wyoming", 
+    TRUE ~ state_name # copy over rest of state names from as-is
+  )) |> 
+  filter(!state_name %in% c('Beaver', 'Beckham', 'Harper', 'Hemphill', 'Midland', 'Red River', 'Roosevelt', 'Rusk', 'State', 'Ward')) |> 
+  mutate(state_abb = )
+           
+           
+           
+          
+fracking_clean
+```
+
+ 
