@@ -33,3 +33,30 @@ drought_clean <- drought |>
   
   # reorder cols ----
   relocate(date, year, month, day, state_abb, drought_lvl, drought_lvl_long, area_pct)
+  
+```{r}
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##       create stacked area plot of CA drought conditions through time     ----
+##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+drought_clean |> 
+  
+  # remove drought_lvl "None" & filter for just CA ----
+  filter(drought_lvl != "None",
+         state_abb == "CA") |> 
+  ggplot(aes(x = date, y = area_pct, group = drought_lvl_long, fill = drought_lvl_long)) +
+   geom_area(position = position_stack(reverse = TRUE)) +
+   scale_fill_manual(values = c('chocolate', 'orangered4', 'orange', 'darkgoldenrod', 'gold')) +
+  scale_x_date(breaks = scales::breaks_pretty(10), expand = c(0, 0)) +
+  scale_y_continuous(labels = scales::label_percent(scale = 1),
+                     breaks = scales::breaks_pretty(10), expand = c(0, 0)) +
+  theme_light() +
+  labs(title = 'Drought area in California',
+       x = ' ',
+       y = ' ') +
+  theme(legend.position = 'bottom') +
+  guides(fill=guide_legend(title=" "))
+  # pipe into ggplot here!
+```
+  
+  

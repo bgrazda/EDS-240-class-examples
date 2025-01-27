@@ -1,0 +1,23 @@
+---
+title: "week3discussion"
+format: html
+editor: visual
+---
+
+```{r, warning=FALSE, message=FALSE, eval=TRUE, echo=FALSE}
+#| fig-alt: 'Histogram of penguin body mass data among Adelie, Chinstrap, Gentoo species, where Gentoo penguins are frequently the largest species by approximately 2000 grams'
+
+library(ggplot2)
+library(palmerpenguins)
+
+ggplot(data = penguins, aes(x = body_mass_g, fill = species)) +
+  geom_histogram(alpha = 0.5, 
+                 position = "identity") +
+  scale_fill_manual(values = c("darkorange","purple","cyan4")) +
+  labs(x = "Body mass (g)",
+       y = "Frequency",
+       title = "Penguin body masses")
+```
+
+![](nyt-monthly-temp.png){fig-alt="Dot plot of monthly global temperatures from 1850 to 2023 hotter and colder than the 20th century average where every 12 months has been hotter than average since 1975. There have been record breaking hot months in 2020-2023."}
+![](chapman-etal-2024.png){fig-alt="Map of the global number of species observations in 10 to a power where  >2.6 billion species observations in the Global Biodiversity Information Facility from high income countries. "}
